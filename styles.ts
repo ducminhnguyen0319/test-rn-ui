@@ -5,6 +5,7 @@ const styles = StyleSheet.create({
     marginTop: 32,
     paddingHorizontal: 24,
     gap: 8,
+    paddingBottom: 20,
   },
   sectionTitle: {
     fontSize: 24,
