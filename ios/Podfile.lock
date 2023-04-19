@@ -417,6 +417,8 @@ PODS:
     - React-jsi (= 0.71.6)
     - React-logger (= 0.71.6)
     - React-perflogger (= 0.71.6)
+  - RNDateTimePicker (7.0.1):
+    - React-Core
   - RNSVG (12.5.1):
     - React-Core
   - SocketRocket (0.6.0)
@@ -485,6 +487,7 @@ DEPENDENCIES:
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - React-runtimeexecutor (from `../node_modules/react-native/ReactCommon/runtimeexecutor`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - RNSVG (from `../node_modules/react-native-svg`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -577,6 +580,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/runtimeexecutor"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  RNDateTimePicker:
+    :path: "../node_modules/@react-native-community/datetimepicker"
   RNSVG:
     :path: "../node_modules/react-native-svg"
   Yoga:
@@ -631,6 +636,7 @@ SPEC CHECKSUMS:
   React-RCTVibration: 73d201599a64ea14b4e0b8f91b64970979fd92e6
   React-runtimeexecutor: 8692ac548bec648fa121980ccb4304afd136d584
   ReactCommon: 0c43eaeaaee231d7d8dc24fc5a6e4cf2b75bf196
+  RNDateTimePicker: e073697ac3e8a378968d68ab0581fef542b8af8a
   RNSVG: d7d7bc8229af3842c9cfc3a723c815a52cdd1105
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
   Yoga: ba09b6b11e6139e3df8229238aa794205ca6a02a

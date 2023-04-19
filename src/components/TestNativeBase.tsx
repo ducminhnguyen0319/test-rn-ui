@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 import {
   AspectRatio,
@@ -13,10 +13,63 @@ import {
   Text,
   VStack,
   View,
+  Button,
+  Checkbox,
+  Switch,
+  Select,
+  CheckIcon,
 } from 'native-base';
 
+import DateTimePicker from '@react-native-community/datetimepicker';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+
+const DropdownControl = () => {
+  const [selectedValue, setSelectedValue] = useState('');
+  const items = [
+    {label: 'Option 1', value: 'option1'},
+    {label: 'Option 2', value: 'option2'},
+    {label: 'Option 3', value: 'option3'},
+  ];
+
+  return (
+    <Select
+      selectedValue={selectedValue}
+      flex={1}
+      accessibilityLabel="Choose Service"
+      placeholder="Choose Service"
+      mt={1}
+      _selectedItem={{
+        endIcon: <CheckIcon size="5" />,
+      }}
+      onValueChange={itemValue => setSelectedValue(itemValue)}>
+      {items.map(item => (
+        <Select.Item key={item.value} label={item.label} value={item.value} />
+      ))}
+    </Select>
+  );
+};
+
+const DatePickerControl = () => {
+  const [date, setDate] = useState(new Date(1598051730000));
+  const onChange = (_event: any, selectedDate: any) => {
+    const currentDate = selectedDate;
+    setDate(currentDate);
+  };
+
+  return (
+    <View>
+      <Text>selected: {date.toLocaleString()}</Text>
+      <DateTimePicker
+        testID="dateTimePicker"
+        value={date}
+        mode="datetime"
+        is24Hour={true}
+        onChange={onChange}
+      />
+    </View>
+  );
+};
 
 const Example1 = () => {
   return (
@@ -105,22 +158,23 @@ const Example1 = () => {
   );
 };
 
-function SearchBar() {
+function Example0() {
   return (
     <VStack
       my="4"
       space={5}
       w="100%"
-      maxW="300px"
       divider={
         <Box px="2">
-          <View />
+          <View h="0.5px" bg="black" />
         </Box>
       }>
       <VStack w="100%" space={5} alignSelf="center">
         <Heading fontSize="lg">Cupertino</Heading>
         <Input
-          placeholder="Search"
+          accessibilityLabel="Search for your pickup point"
+          accessibilityHint="Search for your pickup point"
+          placeholder="Search for..."
           variant="filled"
           width="100%"
           borderRadius="10"
@@ -136,8 +190,30 @@ function SearchBar() {
           }
         />
       </VStack>
-
-      <VStack w="100%" space={5} alignSelf="center">
+      <Button accessibilityLabel="Press here to do something cool">
+        Press me!
+      </Button>
+      <HStack space={5}>
+        <Text>Checkbox default on</Text>
+        <Checkbox
+          accessibilityLabel="A test checkbox default is on"
+          value={'aaaa'}
+          defaultIsChecked
+        />
+        <Text>off</Text>
+        <Checkbox accessibilityLabel="A normal checkbox" value={'aaaa'} />
+        <Switch
+          size="sm"
+          offTrackColor="orange.100"
+          onTrackColor="orange.200"
+          accessibilityLabel="A normal switch..."
+        />
+      </HStack>
+      <VStack
+        w="100%"
+        space={5}
+        alignSelf="center"
+        accessibilityLabel="An area for combination components">
         <Heading fontSize="lg">Material</Heading>
         <Input
           placeholder="Search People & Places"
@@ -166,6 +242,15 @@ function SearchBar() {
           }
         />
       </VStack>
+      <VStack w="100%" space={5} alignSelf="center">
+        <Heading fontSize="lg">Dropdown</Heading>
+        <DropdownControl />
+      </VStack>
+      <VStack w="100%" space={5} alignSelf="center">
+        <Heading fontSize="lg">DatePicker</Heading>
+        <DatePickerControl />
+      </VStack>
+      <View />
     </VStack>
   );
 }
@@ -173,7 +258,7 @@ function SearchBar() {
 const TestNativeBase = () => {
   return (
     <VStack>
-      <SearchBar />
+      <Example0 />
       <Example1 />
     </VStack>
   );

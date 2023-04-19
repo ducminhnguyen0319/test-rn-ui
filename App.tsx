@@ -81,6 +81,11 @@ function App(): JSX.Element {
                       backgroundColor: isDarkMode ? Colors.black : Colors.white,
                     }}>
                     <Section
+                      title="NativeBase"
+                      description="Test NativeBase UI">
+                      <TestNativeBase />
+                    </Section>
+                    <Section
                       title="SearchBar - @rneui/base"
                       description="RNE is easy to use, doesn't dependent on expo and also support accessibility">
                       <Search
@@ -112,11 +117,6 @@ function App(): JSX.Element {
                           return item;
                         }}
                       />
-                    </Section>
-                    <Section
-                      title="NativeBase"
-                      description="Test NativeBase UI">
-                      <TestNativeBase />
                     </Section>
                     <Section title="Tamagui" description="Test Tamagui UI">
                       <TestTamagui />
