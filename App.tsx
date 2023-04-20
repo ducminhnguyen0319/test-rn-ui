@@ -38,6 +38,10 @@ import appConfig from './tamagui.config';
 // RN BottomSheet
 import TestBottomSheet from './src/components/TestRNBottomSheet';
 
+// RN Paper
+import {Provider as PaperProvider} from 'react-native-paper';
+import TestRNPaper from './src/components/TestRNPaper';
+
 const theme = createTheme({});
 
 function App(): JSX.Element {
@@ -61,82 +65,90 @@ function App(): JSX.Element {
 
   return (
     <>
-      {/* Using with Tamagui */}
-      <TamaguiProvider config={appConfig} defaultTheme="light">
-        {/* Using with NativeBase UI */}
-        <NativeBaseProvider>
-          {/* Using with ReactNativeElements UI */}
-          <ThemeProvider theme={theme}>
-            <SafeAreaView style={backgroundStyle}>
-              <StatusBar
-                barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-                backgroundColor={backgroundStyle.backgroundColor}
-              />
-              <ScrollView
-                horizontal={false}
-                contentInsetAdjustmentBehavior="automatic"
-                style={backgroundStyle}>
+      {/* Usign with RN Paper */}
+      <PaperProvider>
+        {/* Using with Tamagui */}
+        <TamaguiProvider config={appConfig} defaultTheme="light">
+          {/* Using with NativeBase UI */}
+          <NativeBaseProvider>
+            {/* Using with ReactNativeElements UI */}
+            <ThemeProvider theme={theme}>
+              <SafeAreaView style={backgroundStyle}>
+                <StatusBar
+                  barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+                  backgroundColor={backgroundStyle.backgroundColor}
+                />
                 <ScrollView
                   horizontal={false}
-                  contentContainerStyle={contentContainerStyle}>
-                  <View
-                    style={{
-                      backgroundColor: isDarkMode ? Colors.black : Colors.white,
-                    }}>
-                    <Section
-                      title="NativeBase"
-                      description="Test NativeBase UI">
-                      <TestNativeBase />
-                    </Section>
-                    <Section
-                      title="SearchBar - @rneui/base"
-                      description="RNE is easy to use, doesn't dependent on expo and also support accessibility">
-                      <Search
-                        data={hits}
-                        onSelect={function (item: {
-                          id: number;
-                          name: string;
-                        }): void {
-                          console.log(item);
-                        }}
-                      />
-                    </Section>
-                    <Section
-                      title="react-native-select-dropdown"
-                      description="Test RN Select Dropdown, ez to use">
-                      <SelectDropdown
-                        data={countries}
-                        onSelect={(selectedItem, index) => {
-                          console.log(selectedItem, index);
-                        }}
-                        buttonTextAfterSelection={(selectedItem, _index) => {
-                          // text represented after item is selected
-                          // if data array is an array of objects then return selectedItem.property to render after item is selected
-                          return selectedItem;
-                        }}
-                        rowTextForSelection={(item, _index) => {
-                          // text represented for each item in dropdown
-                          // if data array is an array of objects then return item.property to represent item in dropdown
-                          return item;
-                        }}
-                      />
-                    </Section>
-                    <Section title="Tamagui" description="Test Tamagui UI">
-                      <TestTamagui />
-                    </Section>
-                    <Section
-                      title="RN Bottom Sheet"
-                      description="Test RN Bottom Sheet">
-                      <TestBottomSheet />
-                    </Section>
-                    <Section title="Final section" description="Final test" />
-                  </View>
+                  contentInsetAdjustmentBehavior="automatic"
+                  style={backgroundStyle}>
+                  <ScrollView
+                    horizontal={false}
+                    contentContainerStyle={contentContainerStyle}>
+                    <View
+                      style={{
+                        backgroundColor: isDarkMode
+                          ? Colors.black
+                          : Colors.white,
+                      }}>
+                      <Section
+                        title="NativeBase"
+                        description="Test NativeBase UI">
+                        <TestNativeBase />
+                      </Section>
+                      <Section
+                        title="SearchBar - @rneui/base"
+                        description="RNE is easy to use, doesn't dependent on expo and also support accessibility">
+                        <Search
+                          data={hits}
+                          onSelect={function (item: {
+                            id: number;
+                            name: string;
+                          }): void {
+                            console.log(item);
+                          }}
+                        />
+                      </Section>
+                      <Section
+                        title="react-native-select-dropdown"
+                        description="Test RN Select Dropdown, ez to use">
+                        <SelectDropdown
+                          data={countries}
+                          onSelect={(selectedItem, index) => {
+                            console.log(selectedItem, index);
+                          }}
+                          buttonTextAfterSelection={(selectedItem, _index) => {
+                            // text represented after item is selected
+                            // if data array is an array of objects then return selectedItem.property to render after item is selected
+                            return selectedItem;
+                          }}
+                          rowTextForSelection={(item, _index) => {
+                            // text represented for each item in dropdown
+                            // if data array is an array of objects then return item.property to represent item in dropdown
+                            return item;
+                          }}
+                        />
+                      </Section>
+                      <Section title="Tamagui" description="Test Tamagui UI">
+                        <TestTamagui />
+                      </Section>
+                      <Section
+                        title="RN Bottom Sheet"
+                        description="Test RN Bottom Sheet">
+                        <TestBottomSheet />
+                      </Section>
+                      <Section title="RN Paper" description="Test RN Paper">
+                        <TestRNPaper />
+                      </Section>
+                      <Section title="Final section" description="Final test" />
+                    </View>
+                  </ScrollView>
                 </ScrollView>
-              </ScrollView>
-            </SafeAreaView>
-          </ThemeProvider>
-        </NativeBaseProvider>
-      </TamaguiProvider>
+              </SafeAreaView>
+            </ThemeProvider>
+          </NativeBaseProvider>
+        </TamaguiProvider>
+      </PaperProvider>
     </>
   );
 }
