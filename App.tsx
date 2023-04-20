@@ -35,6 +35,9 @@ import TestTamagui from './src/components/TestTamagui';
 import {TamaguiProvider} from 'tamagui';
 import appConfig from './tamagui.config';
 
+// RN BottomSheet
+import TestBottomSheet from './src/components/TestRNBottomSheet';
+
 const theme = createTheme({});
 
 function App(): JSX.Element {
@@ -120,6 +123,11 @@ function App(): JSX.Element {
                     </Section>
                     <Section title="Tamagui" description="Test Tamagui UI">
                       <TestTamagui />
+                    </Section>
+                    <Section
+                      title="RN Bottom Sheet"
+                      description="Test RN Bottom Sheet">
+                      <TestBottomSheet />
                     </Section>
                     <Section title="Final section" description="Final test" />
                   </View>
