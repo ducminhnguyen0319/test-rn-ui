@@ -18,11 +18,13 @@ import {
   Switch,
   Select,
   CheckIcon,
+  ScrollView,
 } from 'native-base';
 
 import DateTimePicker from '@react-native-community/datetimepicker';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {NativeBaseProvider} from 'native-base';
 
 const DropdownControl = () => {
   const [selectedValue, setSelectedValue] = useState('');
@@ -63,7 +65,7 @@ const DatePickerControl = () => {
       <DateTimePicker
         testID="dateTimePicker"
         value={date}
-        mode="datetime"
+        mode="date"
         is24Hour={true}
         onChange={onChange}
       />
@@ -257,10 +259,14 @@ function Example0() {
 
 const TestNativeBase = () => {
   return (
-    <VStack>
-      <Example0 />
-      <Example1 />
-    </VStack>
+    <NativeBaseProvider>
+      <ScrollView style={{padding: 16}}>
+        <VStack>
+          <Example0 />
+          <Example1 />
+        </VStack>
+      </ScrollView>
+    </NativeBaseProvider>
   );
 };
 

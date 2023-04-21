@@ -1,8 +1,10 @@
 import React from 'react';
+// Config Tamagui
+import {TamaguiProvider} from 'tamagui';
+import appConfig from '../../tamagui.config';
 
 import {useEffect, useState} from 'react';
 
-import {X} from '@tamagui/lucide-icons';
 import {
   Button,
   Paragraph,
@@ -104,7 +106,11 @@ const ProgressDemo = () => {
 };
 
 const TestTamagui = () => {
-  return <ProgressDemo />;
+  return (
+    <TamaguiProvider config={appConfig} defaultTheme="light">
+      <ProgressDemo />
+    </TamaguiProvider>
+  );
 };
 
 export default TestTamagui;

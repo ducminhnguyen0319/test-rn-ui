@@ -7,13 +7,11 @@
 
 import React from 'react';
 
-// Using rneui
-import {createTheme, ThemeProvider} from '@rneui/themed';
-
 // Using formik
 // import {Formik} from 'formik';
 
 import {
+  GestureResponderEvent,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -21,136 +19,153 @@ import {
   View,
 } from 'react-native';
 
+import type {PropsWithChildren} from 'react';
+import {NavigationContainer, useNavigation} from '@react-navigation/native';
+import {
+  createNativeStackNavigator,
+  NativeStackNavigationProp,
+} from '@react-navigation/native-stack';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
+import {Button} from 'react-native';
 
 import Section from './src/components/Section';
-import Search from './src/components/Search';
-import {NativeBaseProvider} from 'native-base';
 
-import SelectDropdown from 'react-native-select-dropdown';
 import TestNativeBase from './src/components/TestNativeBase';
 import TestTamagui from './src/components/TestTamagui';
-
-// Config Tamagui
-import {TamaguiProvider} from 'tamagui';
-import appConfig from './tamagui.config';
 
 // RN BottomSheet
 import TestBottomSheet from './src/components/TestRNBottomSheet';
 
-// RN Paper
-import {Provider as PaperProvider} from 'react-native-paper';
 import TestRNPaper from './src/components/TestRNPaper';
 
-const theme = createTheme({});
+// RNE
+import TestRNE from './src/components/TestRNE';
+import TestSelectDropdown from './src/components/TestSelectDropdown';
 
-function App(): JSX.Element {
+const Stack = createNativeStackNavigator();
+
+export type RootStackParamList = {
+  Home: undefined;
+  RNE: undefined;
+  Tamagui: undefined;
+  NativeBase: undefined;
+  RNSelectDropdown: undefined;
+  BottomSheet: undefined;
+  RNPaper: undefined;
+};
+
+const AppStack = () => {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={App} options={{title: 'Home'}} />
+        <Stack.Screen
+          name="RNE"
+          component={TestRNE}
+          options={{title: 'React Native Elements'}}
+        />
+        <Stack.Screen
+          name="NativeBase"
+          component={TestNativeBase}
+          options={{title: 'NativeBase'}}
+        />
+        <Stack.Screen
+          name="RNSelectDropdown"
+          component={TestSelectDropdown}
+          options={{title: 'Select Dropdown'}}
+        />
+        <Stack.Screen
+          name="Tamagui"
+          component={TestTamagui}
+          options={{title: 'Tamagui'}}
+        />
+        <Stack.Screen
+          name="BottomSheet"
+          component={TestBottomSheet}
+          options={{title: 'RN BottomSheet'}}
+        />
+        <Stack.Screen
+          name="RNPaper"
+          component={TestRNPaper}
+          options={{title: 'RN Paper'}}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
+
+type TestSectionProps = PropsWithChildren<{
+  title: string;
+  description: string;
+  onPress: (event: GestureResponderEvent) => void;
+}>;
+
+const TestSection = ({title, description, onPress}: TestSectionProps) => {
+  return (
+    <Section title={title} description={description}>
+      <Button title="More details" onPress={onPress} />
+    </Section>
+  );
+};
+
+const App = () => {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const isDarkMode = useColorScheme() === 'dark';
-  const hits = [
-    {id: 1, name: 'A'},
-    {id: 2, name: 'B'},
-    {id: 3, name: 'C'},
-  ];
-  const countries = ['Egypt', 'Canada', 'Australia', 'Ireland'];
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
     flex: 1,
   };
 
-  const contentContainerStyle = {
-    width: '100%',
-    height: '100%',
-  };
-
   return (
-    <>
-      {/* Usign with RN Paper */}
-      <PaperProvider>
-        {/* Using with Tamagui */}
-        <TamaguiProvider config={appConfig} defaultTheme="light">
-          {/* Using with NativeBase UI */}
-          <NativeBaseProvider>
-            {/* Using with ReactNativeElements UI */}
-            <ThemeProvider theme={theme}>
-              <SafeAreaView style={backgroundStyle}>
-                <StatusBar
-                  barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-                  backgroundColor={backgroundStyle.backgroundColor}
-                />
-                <ScrollView
-                  horizontal={false}
-                  contentInsetAdjustmentBehavior="automatic"
-                  style={backgroundStyle}>
-                  <ScrollView
-                    horizontal={false}
-                    contentContainerStyle={contentContainerStyle}>
-                    <View
-                      style={{
-                        backgroundColor: isDarkMode
-                          ? Colors.black
-                          : Colors.white,
-                      }}>
-                      <Section
-                        title="NativeBase"
-                        description="Test NativeBase UI">
-                        <TestNativeBase />
-                      </Section>
-                      <Section
-                        title="SearchBar - @rneui/base"
-                        description="RNE is easy to use, doesn't dependent on expo and also support accessibility">
-                        <Search
-                          data={hits}
-                          onSelect={function (item: {
-                            id: number;
-                            name: string;
-                          }): void {
-                            console.log(item);
-                          }}
-                        />
-                      </Section>
-                      <Section
-                        title="react-native-select-dropdown"
-                        description="Test RN Select Dropdown, ez to use">
-                        <SelectDropdown
-                          data={countries}
-                          onSelect={(selectedItem, index) => {
-                            console.log(selectedItem, index);
-                          }}
-                          buttonTextAfterSelection={(selectedItem, _index) => {
-                            // text represented after item is selected
-                            // if data array is an array of objects then return selectedItem.property to render after item is selected
-                            return selectedItem;
-                          }}
-                          rowTextForSelection={(item, _index) => {
-                            // text represented for each item in dropdown
-                            // if data array is an array of objects then return item.property to represent item in dropdown
-                            return item;
-                          }}
-                        />
-                      </Section>
-                      <Section title="Tamagui" description="Test Tamagui UI">
-                        <TestTamagui />
-                      </Section>
-                      <Section
-                        title="RN Bottom Sheet"
-                        description="Test RN Bottom Sheet">
-                        <TestBottomSheet />
-                      </Section>
-                      <Section title="RN Paper" description="Test RN Paper">
-                        <TestRNPaper />
-                      </Section>
-                      <Section title="Final section" description="Final test" />
-                    </View>
-                  </ScrollView>
-                </ScrollView>
-              </SafeAreaView>
-            </ThemeProvider>
-          </NativeBaseProvider>
-        </TamaguiProvider>
-      </PaperProvider>
-    </>
+    <SafeAreaView style={backgroundStyle}>
+      <StatusBar
+        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+        backgroundColor={backgroundStyle.backgroundColor}
+      />
+      <ScrollView
+        horizontal={false}
+        contentInsetAdjustmentBehavior="automatic"
+        style={backgroundStyle}>
+        <View
+          style={{
+            backgroundColor: isDarkMode ? Colors.black : Colors.white,
+          }}>
+          <TestSection
+            title="NativeBase"
+            description="Test NativeBase UI"
+            onPress={() => navigation.navigate('NativeBase')}
+          />
+          <TestSection
+            title="RN Select Dropdown"
+            description="Test RN Select Dropdown, it's ez to use"
+            onPress={() => navigation.navigate('RNSelectDropdown')}
+          />
+          <TestSection
+            title="Tamagui"
+            description="Test Tammagui UI"
+            onPress={() => navigation.navigate('Tamagui')}
+          />
+          <TestSection
+            title="RN Bottom sheet"
+            description="Test RN Bottom Sheet"
+            onPress={() => navigation.navigate('BottomSheet')}
+          />
+          <TestSection
+            title="RN Elements"
+            description="Test RN Elements"
+            onPress={() => navigation.navigate('RNE')}
+          />
+          <TestSection
+            title="RN Paper"
+            description="Test RN Paper"
+            onPress={() => navigation.navigate('RNPaper')}
+          />
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
-}
+};
 
-export default App;
+export default AppStack;
