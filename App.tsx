@@ -32,15 +32,11 @@ import Section from './src/components/Section';
 
 import TestNativeBase from './src/components/TestNativeBase';
 import TestTamagui from './src/components/TestTamagui';
-
-// RN BottomSheet
 import TestBottomSheet from './src/components/TestRNBottomSheet';
-
 import TestRNPaper from './src/components/TestRNPaper';
-
-// RNE
 import TestRNE from './src/components/TestRNE';
 import TestSelectDropdown from './src/components/TestSelectDropdown';
+import SearchLocation from './src/components/SearchLocation';
 
 const Stack = createNativeStackNavigator();
 
@@ -52,6 +48,7 @@ export type RootStackParamList = {
   RNSelectDropdown: undefined;
   BottomSheet: undefined;
   RNPaper: undefined;
+  Location: undefined;
 };
 
 const AppStack = () => {
@@ -59,6 +56,11 @@ const AppStack = () => {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Home" component={App} options={{title: 'Home'}} />
+        <Stack.Screen
+          name="Location"
+          component={SearchLocation}
+          options={{title: 'Search location'}}
+        />
         <Stack.Screen
           name="RNE"
           component={TestRNE}
@@ -132,6 +134,11 @@ const App = () => {
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
+          <TestSection
+            title="Search location UI"
+            description="Combine stuff UIs"
+            onPress={() => navigation.navigate('Location')}
+          />
           <TestSection
             title="NativeBase"
             description="Test NativeBase UI"
