@@ -2,6 +2,7 @@ import {useState, useEffect, forwardRef} from 'react';
 import {Text, FlatList} from 'react-native';
 import {Pressable, Input, Popover, Icon, useDisclose, Box} from 'native-base';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {Platform} from 'react-native';
 
 const Popper = ({handleSearchTextChange, suggestions, isSuggestionsOpen}) => {
   return (
@@ -10,7 +11,7 @@ const Popper = ({handleSearchTextChange, suggestions, isSuggestionsOpen}) => {
         preventOverflow
         isKeyboardDismissable={false}
         placement="bottom"
-        offset={-55}
+        offset={Platform.OS === 'ios' ? -55 : 0}
         trigger={triggerProps => {
           return (
             <Rinput
@@ -20,8 +21,14 @@ const Popper = ({handleSearchTextChange, suggestions, isSuggestionsOpen}) => {
             />
           );
         }}>
-        <Popover.Content accessibilityLabel="Delete Customerd" w="300">
+        <Popover.Content
+          accessibilityLabel="Select one item from the list below"
+          w="320">
+          <Popover.Arrow />
           <Popover.CloseButton />
+          <Popover.Header>
+            <Text>Suggestion result</Text>
+          </Popover.Header>
           <Popover.Body>
             <FlatList
               data={suggestions}
@@ -73,6 +80,8 @@ const Rinput = forwardRef(({handleSearchTextChange, ...triggerProps}, ref) => {
       py="3"
       px="1"
       fontSize="14"
+      returnKeyType="search"
+      clearButtonMode="while-editing"
       InputLeftElement={
         <Icon
           m="2"

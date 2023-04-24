@@ -23,7 +23,7 @@ const SearchLocation = () => {
       try {
         const encodedSearchText = encodeURIComponent(searchText);
         const uri = `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${encodedSearchText}&inputtype=textquery&fields=formatted_address%2Cname%2Crating%2Copening_hours%2Cgeometry&key=${GOOGLE_PLACES_API_KEY}`;
-        console.log(uri);
+        // console.log(uri);
         const response = await axios.get(uri);
 
         // add 3 more items
@@ -62,7 +62,7 @@ const SearchLocation = () => {
 
         if (response.data && response.data.candidates) {
           const candidates = response.data.candidates;
-          setSuggestions([...candidates, ...additionalItems]);
+          setSuggestions([...additionalItems, ...candidates]);
           setIsSuggestionsOpen(true);
         } else {
           setSuggestions(additionalItems);
