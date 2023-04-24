@@ -9,53 +9,58 @@ import {GOOGLE_PLACES_API_KEY} from '@env';
 
 import Popper from './popper';
 
-const YOUR_HOME_LOCATION = {lat: 100, lng: 100};
-const YOUR_WORK_LOCATION = {lat: 100, lng: 100};
-const YOUR_CURRENT_LOCATION = {lat: 100, lng: 100};
+interface Location {
+  lat: Number;
+  lng: Number;
+}
+
+interface Geometry {
+  location: Location;
+}
+
+interface SuggestLocation {
+  name: string;
+  formatted_address: string;
+  geometry: Geometry;
+}
+
+const YOUR_HOME_LOCATION: Location = {lat: 100, lng: 100};
+const YOUR_WORK_LOCATION: Location = {lat: 100, lng: 100};
+const YOUR_CURRENT_LOCATION: Location = {lat: 100, lng: 100};
 
 const SearchLocation = () => {
-  const [searchText, setSearchText] = useState('');
   const [isSuggestionsOpen, setIsSuggestionsOpen] = useState(true);
-  const [suggestions, setSuggestions] = useState([]);
+  const [suggestions, setSuggestions] = useState<SuggestLocation[] | []>([]);
 
-  const handleSearch = async () => {
-    if (searchText && searchText.length > 0) {
+  const handleSearch = async (keyword: string) => {
+    if (keyword && keyword.length > 0) {
       try {
-        const encodedSearchText = encodeURIComponent(searchText);
+        const encodedSearchText = encodeURIComponent(keyword);
         const uri = `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${encodedSearchText}&inputtype=textquery&fields=formatted_address%2Cname%2Crating%2Copening_hours%2Cgeometry&key=${GOOGLE_PLACES_API_KEY}`;
-        // console.log(uri);
+        console.log(uri);
         const response = await axios.get(uri);
 
         // add 3 more items
-        const additionalItems = [
+        const additionalItems: SuggestLocation[] = [
           {
             name: 'Home',
             formatted_address: 'Your home address',
             geometry: {
-              location: {
-                lat: YOUR_HOME_LOCATION.lat,
-                lng: YOUR_HOME_LOCATION.lng,
-              },
+              location: YOUR_HOME_LOCATION,
             },
           },
           {
             name: 'Work',
             formatted_address: 'Your work address',
             geometry: {
-              location: {
-                lat: YOUR_WORK_LOCATION.lat,
-                lng: YOUR_WORK_LOCATION.lng,
-              },
+              location: YOUR_WORK_LOCATION,
             },
           },
           {
             name: 'Current Location',
             formatted_address: 'Your current location',
             geometry: {
-              location: {
-                lat: YOUR_CURRENT_LOCATION.lat,
-                lng: YOUR_CURRENT_LOCATION.lng,
-              },
+              location: YOUR_CURRENT_LOCATION,
             },
           },
         ];
@@ -78,13 +83,13 @@ const SearchLocation = () => {
   };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const debouncedSearch = useCallback(debounce(handleSearch, 2000), [
-    searchText,
-  ]);
+  const debouncedSearch = useCallback(
+    debounce(text => handleSearch(text), 1000),
+    [],
+  );
 
   const handleSearchTextChange = (text: string) => {
-    setSearchText(text);
-    debouncedSearch();
+    debouncedSearch(text);
   };
 
   return (
