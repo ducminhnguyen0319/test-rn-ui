@@ -53,23 +53,44 @@ const DropdownControl = () => {
 };
 
 const DatePickerControl = () => {
-  const [date, setDate] = useState(new Date(1598051730000));
+  const [mode, setMode] = useState('date');
+  const [show, setShow] = useState(false);
+  const [date, setDate] = useState(new Date());
   const onChange = (_event: any, selectedDate: any) => {
     const currentDate = selectedDate;
+    setShow(false);
     setDate(currentDate);
   };
 
   return (
-    <View>
+    <VStack space={5}>
       <Text>selected: {date.toLocaleString()}</Text>
-      <DateTimePicker
-        testID="dateTimePicker"
-        value={date}
-        mode="date"
-        is24Hour={true}
-        onChange={onChange}
-      />
-    </View>
+      <Button
+        onPress={() => {
+          setMode('date');
+          setShow(true);
+        }}>
+        Open date picker
+      </Button>
+      <Button
+        onPress={() => {
+          setMode('time');
+          setShow(true);
+        }}>
+        Open time picker
+      </Button>
+      {show && (
+        <DateTimePicker
+          testID="dateTimePicker"
+          value={date}
+          mode={mode}
+          minimumDate={date}
+          is24Hour={true}
+          onChange={onChange}
+          display="spinner"
+        />
+      )}
+    </VStack>
   );
 };
 
