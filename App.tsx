@@ -12,6 +12,7 @@ import React from 'react';
 
 import {
   GestureResponderEvent,
+  Platform,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -38,6 +39,11 @@ import TestRNE from './src/components/TestRNE';
 import TestSelectDropdown from './src/components/TestSelectDropdown';
 import SearchLocation from './src/components/SearchLocation';
 
+import GooglePlacesInput from './src/components/GooglePlacesInput';
+import {PermissionsAndroid} from 'react-native';
+import Geolocation from 'react-native-geolocation-service';
+navigator.geolocation = require('react-native-geolocation-service');
+
 const Stack = createNativeStackNavigator();
 
 export type RootStackParamList = {
@@ -49,6 +55,7 @@ export type RootStackParamList = {
   BottomSheet: undefined;
   RNPaper: undefined;
   Location: undefined;
+  GooglePlacesInput: undefined;
 };
 
 const AppStack = () => {
@@ -56,6 +63,11 @@ const AppStack = () => {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Home" component={App} options={{title: 'Home'}} />
+        <Stack.Screen
+          name="GooglePlacesInput"
+          component={GooglePlacesInput}
+          options={{title: 'GooglePlacesInput'}}
+        />
         <Stack.Screen
           name="Location"
           component={SearchLocation}
@@ -110,7 +122,37 @@ const TestSection = ({title, description, onPress}: TestSectionProps) => {
   );
 };
 
+const requestCameraPermission = async () => {
+  if (Platform.OS === 'ios') {
+    Geolocation.requestAuthorization('whenInUse');
+  } else {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          title: 'App Location Permission',
+          message:
+            'App needs access to your location' +
+            'so you can get better search location results.',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK',
+        },
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log('You can use the location');
+      } else {
+        console.log('Location permission denied');
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  }
+};
+
 const App = () => {
+  requestCameraPermission();
+
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const isDarkMode = useColorScheme() === 'dark';
@@ -134,6 +176,11 @@ const App = () => {
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
+          <TestSection
+            title="GooglePlacesInput UI"
+            description="react-native-google-places-autocomplete"
+            onPress={() => navigation.navigate('GooglePlacesInput')}
+          />
           <TestSection
             title="Search location UI"
             description="Combine stuff UIs"
